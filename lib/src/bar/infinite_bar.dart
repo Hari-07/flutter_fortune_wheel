@@ -37,7 +37,7 @@ class _InfiniteBar extends StatelessWidget {
     final isLockedIn = this.position % 1 == 0;
     final overflowItemCount = position.ceil() + (isLockedIn ? 1 : 0);
     final nonIntOffset = position - position.floor();
-    final itemWidth = size.width / visibleItemCount;
+    final itemHeight = size.height / visibleItemCount;
 
     return ClipRect(
       clipper: _RectClipper(Rect.fromLTWH(0, 0, size.width, size.height)),
@@ -45,23 +45,23 @@ class _InfiniteBar extends StatelessWidget {
         width: size.width,
         height: size.height,
         child: Stack(
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.topCenter,
           children: [
             if (isLengthTwo)
               Transform.translate(
-                offset: Offset((position + children.length) * itemWidth, 0),
+                offset: Offset(0, (position + children.length) * itemHeight),
                 child: SizedBox(
-                  width: itemWidth,
-                  height: size.height,
+                  width: size.width,
+                  height: itemHeight,
                   child: children[0],
                 ),
               ),
             for (int i = 0; i < overflowItemCount; i++)
               Transform.translate(
-                offset: Offset((i + nonIntOffset - 1) * itemWidth, 0),
+                offset: Offset(0, (i + nonIntOffset - 1) * itemHeight),
                 child: SizedBox(
-                  width: itemWidth,
-                  height: size.height,
+                  width: size.width,
+                  height: itemHeight,
                   child: children[(i -
                           overflowItemCount -
                           (isLengthTwo && isLockedIn ? 1 : 0)) %
@@ -70,10 +70,10 @@ class _InfiniteBar extends StatelessWidget {
               ),
             for (int i = 0; i < children.length; i++)
               Transform.translate(
-                offset: Offset((position + i) * itemWidth, 0),
+                offset: Offset(0, (position + i) * itemHeight),
                 child: SizedBox(
-                  width: itemWidth,
-                  height: size.height,
+                  width: size.width,
+                  height: itemHeight,
                   child: children[i],
                 ),
               ),

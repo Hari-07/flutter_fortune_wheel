@@ -14,7 +14,7 @@ class FortuneBar extends HookWidget implements FortuneWidget {
 
   static const List<FortuneIndicator> kDefaultIndicators = <FortuneIndicator>[
     FortuneIndicator(
-      alignment: Alignment.topCenter,
+      alignment: Alignment.centerLeft,
       child: RectangleIndicator(),
     ),
   ];
@@ -138,12 +138,13 @@ class FortuneBar extends HookWidget implements FortuneWidget {
         onFling: onFling,
         builder: (context, panState) {
           return LayoutBuilder(builder: (context, constraints) {
-            final size = Size(
-              fullWidth
-                  ? MediaQuery.of(context).size.width
-                  : constraints.maxWidth,
-              height,
-            );
+            // final size = Size(
+            //   fullWidth
+            //       ? MediaQuery.of(context).size.width
+            //       : constraints.maxWidth,
+            //   height,
+            // );
+            final size = Size(56, constraints.maxHeight);
 
             return Stack(
               children: [
@@ -154,7 +155,7 @@ class FortuneBar extends HookWidget implements FortuneWidget {
                           (items.length * rotationCount + selectedIndex.value);
                       final isAnimatingPanFactor =
                           animationCtrl.isAnimating ? 0 : 1;
-                      final panFactor = 2 / size.width;
+                      final panFactor = 2 / size.height;
                       final panOffset = -panState.distance * panFactor;
                       final position = animation.value * itemPosition +
                           panOffset * isAnimatingPanFactor;
@@ -182,8 +183,8 @@ class FortuneBar extends HookWidget implements FortuneWidget {
                     child: Align(
                       alignment: it.alignment,
                       child: SizedBox(
-                        width: size.width / visibleItemCount,
-                        height: height,
+                        width: 56,
+                        height: size.height / visibleItemCount,
                         child: it.child,
                       ),
                     ),
