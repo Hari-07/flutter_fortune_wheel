@@ -14,7 +14,7 @@ class FortuneBar extends HookWidget implements FortuneWidget {
 
   static const List<FortuneIndicator> kDefaultIndicators = <FortuneIndicator>[
     FortuneIndicator(
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.center,
       child: RectangleIndicator(),
     ),
   ];
@@ -22,8 +22,8 @@ class FortuneBar extends HookWidget implements FortuneWidget {
   static const StyleStrategy kDefaultStyleStrategy =
       UniformStyleStrategy(borderWidth: 4);
 
-  /// Requires this widget to have exactly this height.
-  final double height;
+  /// Requires this widget to have exactly this width.
+  final double width;
 
   /// {@macro flutter_fortune_wheel.FortuneWidget.items}
   final List<FortuneItem> items;
@@ -80,7 +80,7 @@ class FortuneBar extends HookWidget implements FortuneWidget {
   /// {@endtemplate}
   FortuneBar({
     Key? key,
-    this.height = 56.0,
+    this.width = 56.0,
     this.duration = FortuneWidget.kDefaultDuration,
     this.onAnimationStart,
     this.onAnimationEnd,
@@ -144,9 +144,10 @@ class FortuneBar extends HookWidget implements FortuneWidget {
             //       : constraints.maxWidth,
             //   height,
             // );
-            final size = Size(56, constraints.maxHeight);
+            final size = Size(width, constraints.maxHeight);
 
             return Stack(
+              alignment: Alignment.center,
               children: [
                 AnimatedBuilder(
                     animation: animation,
@@ -183,7 +184,7 @@ class FortuneBar extends HookWidget implements FortuneWidget {
                     child: Align(
                       alignment: it.alignment,
                       child: SizedBox(
-                        width: 56,
+                        width: width,
                         height: size.height / visibleItemCount,
                         child: it.child,
                       ),
