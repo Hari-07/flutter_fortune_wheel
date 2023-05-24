@@ -39,6 +39,62 @@ class _InfiniteBar extends StatelessWidget {
     final nonIntOffset = position - position.floor();
     final itemHeight = size.height / visibleItemCount;
 
+    List<Widget> secondCategoryChildren = [];
+    List<Widget> thirdCategoryChildren = [];
+
+    for (int i = 0; i < overflowItemCount; i++) {
+      final verticalPosition = (i + nonIntOffset - 1) * itemHeight;
+      final halfHeight = size.height / 2;
+      final distanceFromCenter =
+          (min((verticalPosition - halfHeight).abs(), halfHeight));
+      final scale = 1 - ((distanceFromCenter / halfHeight) * 0.8);
+
+      secondCategoryChildren.add(
+        Transform.translate(
+          offset: Offset(0, verticalPosition),
+          child: Transform.scale(
+            scale: scale,
+            child: Opacity(
+              opacity: scale,
+              child: SizedBox(
+                width: size.width,
+                height: itemHeight,
+                child: children[(i -
+                        overflowItemCount -
+                        (isLengthTwo && isLockedIn ? 1 : 0)) %
+                    children.length],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    for (int i = 0; i < children.length; i++) {
+      final verticalPosition = (position + i) * itemHeight;
+      final halfHeight = size.height / 2;
+      final distanceFromCenter =
+          (min((verticalPosition - halfHeight).abs(), halfHeight));
+      final scale = 1 - ((distanceFromCenter / halfHeight) * 0.8);
+
+      thirdCategoryChildren.add(
+        Transform.translate(
+          offset: Offset(0, verticalPosition),
+          child: Transform.scale(
+            scale: scale,
+            child: Opacity(
+              opacity: scale,
+              child: SizedBox(
+                width: size.width,
+                height: itemHeight,
+                child: children[i],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     return ClipRect(
       clipper: _RectClipper(Rect.fromLTWH(0, 0, size.width, size.height)),
       child: SizedBox(
@@ -56,27 +112,8 @@ class _InfiniteBar extends StatelessWidget {
                   child: children[0],
                 ),
               ),
-            for (int i = 0; i < overflowItemCount; i++)
-              Transform.translate(
-                offset: Offset(0, (i + nonIntOffset - 1) * itemHeight),
-                child: SizedBox(
-                  width: size.width,
-                  height: itemHeight,
-                  child: children[(i -
-                          overflowItemCount -
-                          (isLengthTwo && isLockedIn ? 1 : 0)) %
-                      children.length],
-                ),
-              ),
-            for (int i = 0; i < children.length; i++)
-              Transform.translate(
-                offset: Offset(0, (position + i) * itemHeight),
-                child: SizedBox(
-                  width: size.width,
-                  height: itemHeight,
-                  child: children[i],
-                ),
-              ),
+            ...secondCategoryChildren,
+            ...thirdCategoryChildren,
           ],
         ),
       ),
