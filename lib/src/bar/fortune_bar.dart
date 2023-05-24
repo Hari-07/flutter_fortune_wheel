@@ -185,7 +185,7 @@ class FortuneBar extends HookWidget implements FortuneWidget {
                       alignment: it.alignment,
                       child: SizedBox(
                         width: width,
-                        height: size.height / visibleItemCount,
+                        height: size.height / 2,
                         child: it.child,
                       ),
                     ),
